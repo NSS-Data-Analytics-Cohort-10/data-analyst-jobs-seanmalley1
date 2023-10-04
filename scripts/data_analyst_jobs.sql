@@ -19,7 +19,7 @@ LIMIT 10;
 --ExxonMobil
 
 
-How many postings are in Tennessee? (21)
+--How many postings are in Tennessee? (21)
 SELECT COUNT(location)
 FROM data_analyst_jobs
 WHERE location = 'TN';
@@ -80,39 +80,48 @@ GROUP BY company
 HAVING SUM(review_count) > 5000
 ORDER BY company ASC;
 
---How many companies are there with more that 5000 reviews across all locations? (71)
+--Q 9B How many companies are there with more that 5000 reviews across all locations? (40)
+
+SELECT company, AVG(star_rating)
+FROM data_analyst_jobs
+WHERE review_count > 5000
+	AND company IS NOT NULL
+GROUP BY company;
 
 
-SELECT COUNT(*) AS total_companies_review_more_than_5000
-FROM (
-    SELECT company
-    FROM data_analyst_jobs
-    GROUP BY company
-    HAVING SUM(review_count) > 5000
-	
-) AS derived_table;
-
--- Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? (Google) What is that rating? (4.3~)
+--Q10 Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? (Unilever, General Motors,Nike,American Express,Microsoft,Kaiser Permanente) What is that rating? (4.199)
 
 SELECT company, AVG(star_rating) AS average_star_rating
 FROM data_analyst_jobs
+WHERE review_count > 5000
+AND company IS NOT NULL
 GROUP BY company
-HAVING SUM(review_count) > 5000
 ORDER BY average_star_rating DESC;
 
+--Q11 Find all the job titles that contain the word ‘Analyst’. 
 
--- Find all the job titles that contain the word ‘Analyst’.
-SELECT title
+SELECT DISTINCT LOWER(title)
 FROM data_analyst_jobs
-WHERE title LIKE 'Analyst%';
+WHERE LOWER(title) LIKE '%analyst%'  
 
---How many different job titles are there?
+--How many different job titles are there? (1669)
 
-SELECT COUNT(title)
+SELECT COUNT(DISTINCT(LOWER(title)))
 FROM data_analyst_jobs
-WHERE title LIKE 'Analyst%';
+WHERE LOWER(title) LIKE '%analyst%' 
 
--- How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
+-- How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? (still working on this)
+
+SELECT COUNT(DISTINCT(title))
+FROM data_analyst_jobs
+WHERE LOWER(title) NOT LIKE '%Analyst%' AND LOWER(title) NOT LIKE '%Analytics%';
+
+
+--What word do these positions have in common?
+
+SELECT DISTINCT(title)
+FROM data_analyst_jobs
+WHERE title NOT LIKE '%Analyst%' AND title NOT LIKE '%Analytics%' 
 
 -- BONUS: You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks.
 
