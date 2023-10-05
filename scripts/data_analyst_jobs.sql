@@ -109,28 +109,50 @@ WHERE LOWER(title) LIKE '%analyst%'
 SELECT COUNT(DISTINCT(LOWER(title)))
 FROM data_analyst_jobs
 WHERE LOWER(title) LIKE '%analyst%' 
+--770
+-- or
 
--- How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? (still working on this)
+SELECT COUNT(DISTINCT title)
+FROM data_analyst_jobs
+WHERE title ILIKE '%Analyst%';
+--774
+
+-- Q12 How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? (4)
+
+-- SELECT COUNT(DISTINCT(title))
+-- FROM data_analyst_jobs
+-- WHERE LOWER(title) NOT LIKE '%Analyst%' AND LOWER(title) NOT LIKE '%Analytics%';
+-- (why does this not work?)
 
 SELECT COUNT(DISTINCT(title))
 FROM data_analyst_jobs
-WHERE LOWER(title) NOT LIKE '%Analyst%' AND LOWER(title) NOT LIKE '%Analytics%';
+WHERE title NOT ILIKE '%Analyst%' AND title NOT ILIKE '%Analytics%';
+-- 4
 
+--What word do these positions have in common? (tableau)
 
---What word do these positions have in common?
-
-SELECT DISTINCT(title)
+SELECT (title)
 FROM data_analyst_jobs
-WHERE title NOT LIKE '%Analyst%' AND title NOT LIKE '%Analytics%' 
+WHERE title NOT ILIKE '%Analyst%' AND title NOT ILIKE '%Analytics%';
+--Tableau
 
 -- BONUS: You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks.
-
 -- Disregard any postings where the domain is NULL.
 -- Order your results so that the domain with the greatest number of hard to fill jobs is at the top.
--- Which four industries are in the top 4 on this list? How many jobs have been listed for more than 3 weeks for each of the top 4?
+-- Which four industries are in the top 4 on this list? (Internet and Software, Banks and Financial Services, Consulting and Business)
+SELECT domain, COUNT(title)
+FROM data_analyst_jobs
+WHERE skill ILIKE '%SQL%' AND days_since_posting > 21 AND domain IS NOT NULL
+GROUP BY domain
+ORDER BY COUNT(title) DESC
+LIMIT 4
+--How many jobs have been listed for more than 3 weeks for each of the top 4?
+-- Internet and Software 62
+--Banks and Financial 61
+--Consulting and Business Services 57
+--Health Care 52
 
 
--- Write a query to look at just the first 10 rows. What company is associated with the job posting on the 10th row?
 
 
 
