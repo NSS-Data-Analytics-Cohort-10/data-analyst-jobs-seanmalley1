@@ -104,7 +104,7 @@ SELECT DISTINCT LOWER(title)
 FROM data_analyst_jobs
 WHERE LOWER(title) LIKE '%analyst%'  
 
---How many different job titles are there? (1669)
+--How many different job titles are there? (770 or 774, depending)
 
 SELECT COUNT(DISTINCT(LOWER(title)))
 FROM data_analyst_jobs
