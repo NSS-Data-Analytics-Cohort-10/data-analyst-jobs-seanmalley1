@@ -34,7 +34,7 @@ SELECT COUNT(location)
 FROM data_analyst_jobs
 WHERE LOCATION IN ('TN', 'KY');
 
--- How many postings in Tennessee have a star rating above 4? (3)
+-- How many postings in Tennessee Have a star rating above 4? (3)
 
 SELECT COUNT(location)
 FROM data_analyst_jobs
